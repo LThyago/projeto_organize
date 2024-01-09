@@ -1,5 +1,5 @@
 <?php
-class BaseModel {
+class BaseModel implements JsonSerializable {
     private $dataCriacao;
     private $dataAlteracao;
     private $criadoPor;
@@ -49,5 +49,14 @@ class BaseModel {
         $this -> deletado = $deletadoParam;
     }
 
+    public function jsonSerialize() {
+        return [
+            'dataCriacao' => $this -> getDataCriacao(),
+            'dataALteracao' => $this -> getDataAlteracao(),
+            'criadoPor' => $this -> getCriadoPor(),
+            'alteradoPor' => $this -> getAlteradoPor(),
+            'deletado' => $this -> getDeletado()
+        ];
+    }
 }
 ?>
