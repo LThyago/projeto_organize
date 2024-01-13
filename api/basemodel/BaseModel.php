@@ -52,7 +52,7 @@ class BaseModel implements JsonSerializable {
     public function jsonSerialize() {
         return [
             'dataCriacao' => $this -> getDataCriacao(),
-            'dataALteracao' => $this -> getDataAlteracao(),
+            'dataAlteracao' => $this -> getDataAlteracao(),
             'criadoPor' => $this -> getCriadoPor(),
             'alteradoPor' => $this -> getAlteradoPor(),
             'deletado' => $this -> getDeletado()

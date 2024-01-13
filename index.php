@@ -9,9 +9,6 @@ switch ($request){
     case '/api/usuarios/login':
         require __DIR__ . '/api/usuarios/UsuariosController.php';
         break;
-    case '/api/usuarios/deletar':
-        require __DIR__ . '/api/usuarios/UsuariosController.php';
-        break;
     case '/api/tarefas/criar':
         require __DIR__ . '/api/tarefas/TarefasController.php';
         break;
