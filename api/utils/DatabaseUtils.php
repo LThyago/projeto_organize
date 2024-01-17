@@ -1,12 +1,12 @@
 <?php
 
-require __DIR__ . '/api/basemodel/BaseException.php';
+require_once __DIR__ . '/../basemodel/BaseException.php';
 
 class DataBaseUtils {
 
-    private $servidor = "localhost";
+    private $servidor = "localhost:3306";
     private $usuario = "root";
-    private $senha = "123";
+    private $senha = "";
     private $banco = "lpp_organize";
 
     public function __construct() {
@@ -17,13 +17,13 @@ class DataBaseUtils {
         $conexao = new mysqli($this -> servidor, $this -> usuario, $this -> senha, $this -> banco);
 
         if ($conexao->connect_error) {
-            throw new BaseException("Conexão falhou: " . $conexao->connect_error);
+            throw new ExcecaoBase("Conexão falhou: " . $conexao->connect_error);
         }
 
         $resultado = $conexao->query($query);
 
         if ($resultado === false) {
-            throw new BaseException("Erro na consulta: " . $conexao->error);
+            throw new ExcecaoBase("Erro na consulta: " . $conexao->error);
         }
 
         $listaResultados = array();
@@ -41,13 +41,13 @@ class DataBaseUtils {
         $conexao = new mysqli($this -> servidor, $this -> usuario, $this -> senha, $this -> banco);
 
         if ($conexao->connect_error) {
-            throw new BaseException("Conexão falhou: " . $conexao->connect_error);
+            throw new ExcecaoBase("Conexão falhou: " . $conexao->connect_error);
         }
 
         $resultado = $conexao->query($query);
 
         if ($resultado === false) {
-            throw new BaseException("Erro na execução da query no banco: " . $conexao->error);
+            throw new ExcecaoBase("Erro na execução da query no banco: " . $conexao->error);
         }
 
         $conexao->close();

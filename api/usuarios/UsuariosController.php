@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . '/api/usuarios/UsuariosService.php';
-require __DIR__ . '/api/utils/ModelValidadorUtils.php';
+require_once __DIR__ . '/UsuariosService.php';
+require_once __DIR__ . '/../utils/ModelValidadorUtils.php';
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
@@ -8,7 +8,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $ultimaParteCaminho = end(explode('/', trim($_SERVER['REQUEST_URI'], '/')));
         $modelRequest = json_decode(file_get_contents("php://input"));
         if($ultimaParteCaminho == 'criar') {
-            validaCorpoRequisicaoRegistro($modelRequest);
+            validarCorpoRequisicaoRegistro($modelRequest);
             $usuariosService -> registrarUsuario($modelRequest);
         }else {
             validarCorpoRequisicaoLogin($modelRequest);
