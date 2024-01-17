@@ -1,6 +1,7 @@
 <?php
 
-require __DIR__ . '/api/utils/DatabaseUtils.php';
+require_once __DIR__ . '/../utils/DatabaseUtils.php';
+require_once __DIR__ . '/UsuarioModel.php';
 
 class UsuariosService {
 
@@ -12,27 +13,28 @@ class UsuariosService {
 
     public function registrarUsuario($modelUsuario) {
         $usuarioCriacao = new UsuarioModel($modelUsuario -> nome, 
-        $modelUsuario -> login, password_hash($modelUsuario -> senha, PASSWORD_DEFAULT), 
+        $modelUsuario -> login, md5($modelUsuario -> senha), 
         date('Y-m-d H:i:s'), date('Y-m-d H:i:s'), 'registro_usuario', 'registro_usuario', 0);
-        $this -> salvaUsuarioNoBanco($usuarioCriacao);
+        $this -> salvarUsuarioNoBanco($usuarioCriacao);
     }
 
     public function autenticarUsuario($modelUsuario) {
-        return $this -> obtemUsuarioBanco($modelUsuario -> login, 
-        password_hash($modelUsuario -> senha, PASSWORD_DEFAULT));
+        return $this -> obtemUsuarioLoginBanco($modelUsuario -> login, 
+        md5($modelUsuario -> senha));
     }
 
-    private function salvaUsuarioNoBanco($model) {
-        $query = "SELECT * FROM usuarios WHERE login = '$login';";
+    private function salvarUsuarioNoBanco($model) {
+        $query = "SELECT * FROM usuarios WHERE login = '".$model -> getLogin()."';";
         $usuariosBanco = $this -> bancoUtils -> executarConsultaSelectBanco($query);
-        if (!empty($usuariosBanco)) throw new BaseException("Usuário já possui cadastro");
+        if (!empty($usuariosBanco)) throw new ExcecaoBase("Usuário já possui cadastro");
+        $query = "INSERT INTO usuarios(nome, login, senha, data_criacao, data_alteracao, criado_por, alterado_por, deletado) VALUES('".$model -> getNome()."', '".$model -> getLogin()."', '".$model -> getSenha()."', '".$model -> getDataCriacao()."', '".$model -> getDataAlteracao()."', '".$model -> getCriadoPor()."', '".$model -> getAlteradoPor()."', ".$model -> getDeletado().");";
         $this -> bancoUtils -> executarConsultaInsertUpdateOuDeleteBanco($query);
     }
 
     private function obtemUsuarioLoginBanco($login, $senha) {
         $query = "SELECT * FROM usuarios WHERE login = '$login' AND senha = '$senha';";
         $usuariosBanco = $this -> bancoUtils -> executarConsultaSelectBanco($query);
-        if (empty($usuariosBanco)) throw new BaseException("Usuario ou senha inválidos");
+        if (empty($usuariosBanco)) throw new ExcecaoBase("Usuario ou senha inválidos");
         return $usuariosBanco;
     }
 }

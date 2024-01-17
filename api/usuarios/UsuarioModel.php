@@ -1,4 +1,7 @@
 <?php
+
+require_once __DIR__ . '/../basemodel/BaseModel.php';
+
 class UsuarioModel extends BaseModel implements JsonSerializable {
     private $id;
     private $nome;
@@ -10,11 +13,11 @@ class UsuarioModel extends BaseModel implements JsonSerializable {
         $this -> nome = $nome;
         $this -> login = $login;
         $this -> senha = $senha;
-        $this -> dataCriacao = $dataCriacao;
-        $this -> dataAlteracao = $dataAlteracao;
-        $this -> criadoPor = $criadoPor;
-        $this -> alteradoPor = $alteradoPor;
-        $this -> deletado = $deletado;
+        parent::setDataCriacao($dataCriacao);
+        parent::setDataAlteracao($dataAlteracao);
+        parent::setCriadoPor($criadoPor);
+        parent::setAlteradoPor($alteradoPor);
+        parent::setDeletado($deletado);
     }
 
     public function getId() {
