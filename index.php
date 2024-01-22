@@ -2,7 +2,8 @@
 
 mb_internal_encoding('UTF-8');
 
-$request = $_SERVER['REQUEST_URI'];
+$arrayRequest = explode('?', $_SERVER['REQUEST_URI']);
+$request = $arrayRequest[0];
 
 switch ($request){
     case '/api/usuarios/criar':
