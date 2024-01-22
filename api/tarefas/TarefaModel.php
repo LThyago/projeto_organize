@@ -7,7 +7,17 @@ class TarefaModel extends BaseModel implements JsonSerializable {
     private $status;
     private $idCategoria;
     
-    public function __construct() {  
+    public function __construct($titulo, $descricao, $dataLimite, $status, $idCategoria, $dataCriacao, $dataAlteracao, $criadoPor, $alteradoPor, $deletado) {  
+        $this -> titulo = $titulo;
+        $this -> descricao = $descricao;
+        $this -> dataLimite = $dataLimite;
+        $this -> status = $status;
+        $this -> idCategoria = $idCategoria;
+        parent::setDataCriacao($dataCriacao);
+        parent::setDataAlteracao($dataAlteracao);
+        parent::setCriadoPor($criadoPor);
+        parent::setAlteradoPor($alteradoPor);
+        parent::setDeletado($deletado);
     }
 
     public function getId() {

@@ -6,7 +6,16 @@ class CategoriaModel extends BaseModel implements JsonSerializable {
     private $idUsuario;
     private $ordem;
 
-    public function __construct() {  
+    public function __construct($titulo, $descricao, $idUsuario, $ordem, $dataCriacao, $dataAlteracao, $criadoPor, $alteradoPor, $deletado) {  
+        $this -> titulo = $titulo;
+        $this -> descricao = $descricao;
+        $this -> idUsuario = $idUsuario;
+        $this -> ordem = $ordem;
+        parent::setDataCriacao($dataCriacao);
+        parent::setDataAlteracao($dataAlteracao);
+        parent::setCriadoPor($criadoPor);
+        parent::setAlteradoPor($alteradoPor);
+        parent::setDeletado($deletado);
     }
 
     public function getId() {
