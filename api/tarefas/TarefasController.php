@@ -7,7 +7,8 @@ try {
     $usuariosService = new UsuariosService();
     $tarefasService = new TarefasService();
     $usuarioRequisicaoModel = $usuariosService -> validarCredenciaisUsuario(obterInformacoesCabecalhoAutorizacao());
-    $ultimaParteCaminho = end(explode('/', trim($_SERVER['REQUEST_URI'], '/')));
+    $arrayUrl = explode('?', $_SERVER['REQUEST_URI']);
+    $ultimaParteCaminho = end(explode('/', trim($arrayUrl[0], '/')));
 }catch(Exception $e) {
     http_response_code(401);
     header('Content-Type: application/json');
