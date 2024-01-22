@@ -24,7 +24,7 @@ class UsuariosService {
     }
 
     private function salvarUsuarioNoBanco($model) {
-        $query = "SELECT * FROM usuarios WHERE login = '".$model -> getLogin()."';";
+        $query = "SELECT * FROM usuarios WHERE login = '".$model -> getLogin()."' AND deletado = 0;";
         $usuariosBanco = $this -> bancoUtils -> executarConsultaSelectBanco($query);
         if (!empty($usuariosBanco)) throw new ExcecaoBase("Usuário já possui cadastro");
         $query = "INSERT INTO usuarios(nome, login, senha, data_criacao, data_alteracao, criado_por, alterado_por, deletado) VALUES('".$model -> getNome()."', '".$model -> getLogin()."', '".$model -> getSenha()."', '".$model -> getDataCriacao()."', '".$model -> getDataAlteracao()."', '".$model -> getCriadoPor()."', '".$model -> getAlteradoPor()."', ".$model -> getDeletado().");";
@@ -32,10 +32,19 @@ class UsuariosService {
     }
 
     private function obtemUsuarioLoginBanco($login, $senha) {
-        $query = "SELECT * FROM usuarios WHERE login = '$login' AND senha = '$senha';";
+        $query = "SELECT * FROM usuarios WHERE login = '$login' AND senha = '$senha' AND deletado = 0;";
         $usuariosBanco = $this -> bancoUtils -> executarConsultaSelectBanco($query);
         if (empty($usuariosBanco)) throw new ExcecaoBase("Usuario ou senha inválidos");
-        return $usuariosBanco;
+        return $usuariosBanco[0];
+    }
+
+    public function validarCredenciaisUsuario($autorizacaoModel){
+        $login = $autorizacaoModel['login'];
+        $senha = md5($autorizacaoModel['senha']);
+        $query = "SELECT * FROM usuarios WHERE login = '$login' AND senha = '$senha' AND deletado = 0;";
+        $usuariosBanco = $this -> bancoUtils -> executarConsultaSelectBanco($query);
+        if (empty($usuariosBanco)) throw new ExcecaoBase("Usuário não autorizado");
+        return ['idUsuario' => $usuariosBanco[0]['id'], 'login' => $usuariosBanco[0]['login']];
     }
 }
 ?>
